@@ -1,6 +1,6 @@
 # 🎵 MusicRecommender
 
-> **AI-Powered Music Playlist Generation and Recommendation System**
+> **Music Playlist Generation and Recommendation System**
 
 An intelligent music discovery platform that leverages Spotify's vast catalog to provide personalized music recommendations based on mood, genre, and user preferences. Built with FastAPI, PostgreSQL, and modern web technologies.
 
