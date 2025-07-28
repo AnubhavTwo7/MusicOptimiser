@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist Optimizer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-music"></i>
+                <span>Music Optimizer</span>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-item" onclick="showSection('home')">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="nav-item" onclick="showSection('browse')">
+                    <i class="fas fa-list"></i> Browse Playlists
+                </button>
+                <button class="nav-item" onclick="showSection('create')">
+                    <i class="fas fa-plus"></i> Create Playlist
+                </button>
+                <button class="nav-item" onclick="showSection('search')">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <button class="nav-item" onclick="showSection('profile')" id="profileBtn" style="display: none;">
+                    <i class="fas fa-user"></i> Profile
+                </button>
+            </div>
+            <div class="nav-auth">
+                <button id="loginBtn" onclick="showLoginModal()">Login</button>
+                <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Section -->
+            <section id="home" class="section active">
+                <div class="hero">
+                    <h1>🎵 Discover Your Perfect Playlist</h1>
+                    <p>AI-powered music recommendations tailored just for you</p>
+                    
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="getRecommendations('pop')">
+                            <i class="fas fa-star"></i> Pop Hits
+                        </button>
+                        <button class="action-btn" onclick="getRecommendations('rock')">
+                            <i class="fas fa-guitar"></i> Rock Classics
+                        </button>
+                        <button class="action-btn" onclick="getMoodRecommendations('happy')">
+                            <i class="fas fa-smile"></i> Happy Vibes
+                        </button>
+                        <button class="action-btn" onclick="getMoodRecommendations('chill')">
+                            <i class="fas fa-leaf"></i> Chill Music
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recommendations-container">
+                    <h2>Recommendations for You</h2>
+                    <div id="recommendations" class="music-grid">
+                        <!-- Recommendations will load here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Browse Playlists Section -->
+            <section id="browse" class="section">
+                <div class="section-header">
+                    <h2>Browse Playlists</h2>
+                    <div class="filters">
+                        <button onclick="loadPlaylists()" class="filter-btn active">All Public</button>
+                        <button onclick="loadUserPlaylists()" class="filter-btn">My Playlists</button>
+                    </div>
+                </div>
+                <div id="playlists" class="playlist-grid">
+                    <!-- Playlists will load here -->
+                </div>
+            </section>
+
+            <!-- Create Playlist Section -->
+            <section id="create" class="section">
+                <div class="create-container">
+                    <h2>Create New Playlist</h2>
+                    
+                    <form id="createPlaylistForm" class="create-form">
+                        <div class="form-group">
+                            <label for="playlistName">Playlist Name</label>
+                            <input type="text" id="playlistName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="playlistDescription">Description</label>
+                            <textarea id="playlistDescription" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="isPublic" checked> Make playlist public
+                            </label>
+                        </div>
+                        
+                        <div class="recommendation-options">
+                            <h3>Add Songs Based On:</h3>
+                            
+                            <div class="option-group">
+                                <label>Genre:</label>
+                                <select id="genreSelect">
+                                    <option value="">Select Genre</option>
+                                    <option value="pop">Pop</option>
+                                    <option value="rock">Rock</option>
+                                    <option value="jazz">Jazz</option>
+                                    <option value="hip-hop">Hip-Hop</option>
+                                    <option value="electronic">Electronic</option>
+                                    <option value="classical">Classical</option>
+                                    <option value="country">Country</option>
+                                    <option value="r&b">R&B</option>
+                                </select>
+                                <button type="button" onclick="addGenreRecommendations()">Add Genre Songs</button>
+                            </div>
+                            
+                            <div class="option-group">
+                                <label>Mood:</label>
+                                <select id="moodSelect">
+                                    <option value="">Select Mood</option>
+                                    <option value="happy">Happy</option>
+                                    <option value="sad">Sad</option>
+                                    <option value="energetic">Energetic</option>
+                                    <option value="chill">Chill</option>
+                                    <option value="romantic">Romantic</option>
+                                    <option value="focus">Focus</option>
+                                </select>
+                                <button type="button" onclick="addMoodRecommendations()">Add Mood Songs</button>
+                            </div>
+                            
+                            <div class="option-group">
+                                <label>Artist:</label>
+                                <input type="text" id="artistInput" placeholder="Enter artist name">
+                                <button type="button" onclick="addArtistRecommendations()">Add Artist Songs</button>
+                            </div>
+                        </div>
+                        
+                        <div class="selected-songs">
+                            <h3>Selected Songs (<span id="songCount">0</span>)</h3>
+                            <div id="selectedSongs" class="selected-songs-list">
+                                <!-- Selected songs will appear here -->
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="create-btn">
+                            <i class="fas fa-plus"></i> Create Playlist
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Search Section -->
+            <section id="search" class="section">
+                <div class="search-container">
+                    <h2>Search Music</h2>
+                    
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search for songs, artists, or albums...">
+                        <button onclick="searchMusic()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <label>
+                            <input type="radio" name="searchType" value="track" checked> Songs
+                        </label>
+                        <label>
+                            <input type="radio" name="searchType" value="artist"> Artists
+                        </label>
+                    </div>
+                    
+                    <div id="searchResults" class="music-grid">
+                        <!-- Search results will appear here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="section">
+                <div class="profile-container">
+                    <h2>User Profile</h2>
+                    <div id="profileInfo">
+                        <!-- Profile info will load here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('loginModal')">&times;</span>
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" onclick="showRegisterModal()">Register here</a></p>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div id="registerModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('registerModal')">&times;</span>
+                <h2>Register</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <input type="text" id="registerUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+                <p>Already have an account? <a href="#" onclick="showLoginModal()">Login here</a></p>
+            </div>
+        </div>
+
+        <!-- Playlist Detail Modal -->
+        <div id="playlistModal" class="modal">
+            <div class="modal-content large">
+                <span class="close" onclick="closeModal('playlistModal')">&times;</span>
+                <div id="playlistDetail">
+                    <!-- Playlist details will load here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
