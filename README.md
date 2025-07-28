@@ -399,32 +399,9 @@ CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 text
 
-## 🗺️ Roadmap
-
-### Version 2.0 (Upcoming)
-- [ ] **Machine Learning Integration**: Collaborative filtering recommendations
-- [ ] **Last.fm Integration**: Enhanced user music history
-- [ ] **Real-time Sync**: Live playlist updates
-- [ ] **Mobile App**: React Native companion app
-
-### Version 1.5 (Next)
-- [ ] **Advanced Analytics**: User listening statistics
-- [ ] **Social Features**: Follow users and share playlists
-- [ ] **Audio Features**: Tempo, key, and mood analysis
-- [ ] **Export Features**: Export playlists to Spotify
-
-### Current Version 1.0
-- [x] **Core Recommendations**: Mood, genre, and artist-based
-- [x] **User Management**: Registration and authentication
-- [x] **Playlist Management**: Create and manage playlists
-- [x] **Spotify Integration**: Full catalog access
-- [x] **Search Functionality**: Multi-type search
-- [x] **Responsive UI**: Modern web interface
-
 ## 📊 Performance
 
 - **Response Time**: < 500ms for most API calls
-- **Concurrent Users**: Tested up to 100 concurrent users
 - **Database**: Optimized queries with proper indexing
 - **Caching**: In-memory caching for frequent requests
 - **Rate Limiting**: Spotify API rate limit handling
